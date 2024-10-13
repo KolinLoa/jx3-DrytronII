@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # 完整克隆整个历史记录
 
     - name: Set Git Identity
       run: |
