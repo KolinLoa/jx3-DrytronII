@@ -160,7 +160,7 @@ async def handle_flower(event: GroupMessageEvent,
 
     # 分割用户输入，提取服务器名称和花名
     parts = text.split(maxsplit=1)
-    if len(parts) < 2:
+    if len(parts) < 1:
         await flower.finish("能不能认真输入，请给老子输入：服务器名称 花名")
 
     server_name, flower_name = parts[0], parts[1]
