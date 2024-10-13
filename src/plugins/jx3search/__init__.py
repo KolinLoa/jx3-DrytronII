@@ -344,6 +344,48 @@ async def handle_announce(args: Message = CommandArg()):
     # 发送消息
     await announce.send(text_message)
 
+# 骚话，输入骚话
+random = on_command("random", aliases={"骚话"}, priority=5, block=True)
+
+@random.handle()
+async def handle_random(args: Message = CommandArg()):
+    # 从 AsyncJX3API 获取骚话
+    random_info = await async_api_saohua.random
+    
+    # 检查 API 响应是否成功
+    if random_info.get("code") != 200:
+        await random.finish(f"查询失败：{random_info.get('msg', '未知错误')}")
+
+    # 提取骚话
+    data = random_info.get("data", [{}])[0]
+    
+    # 构建返回消息
+    text_message = f"{data.get('text')}"
+    
+    # 发送消息
+    await random.send(text_message)
+
+# 舔狗日记，输入舔狗
+content = on_command("content", aliases={"舔狗"}, priority=5, block=True)
+
+@content.handle()
+async def handle_content(args: Message = CommandArg()):
+    # 从 AsyncJX3API 获取舔狗
+    content_info = await async_api_saohua.content
+    
+    # 检查 API 响应是否成功
+    if content_info.get("code") != 200:
+        await content.finish(f"查询失败：{content_info.get('msg', '未知错误')}")
+
+    # 提取舔狗
+    data = content_info.get("data", [{}])[0]
+    
+    # 构建返回消息
+    text_message = f"{data.get('text')}"
+    
+    # 发送消息
+    await content.send(text_message)
+
 
 
 
