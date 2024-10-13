@@ -1,27 +1,25 @@
 import os
 import json
-from nonebot import get_plugin_config, on_command, get_driver
+from dotenv import load_dotenv  # 导入 dotenv
+from nonebot import on_command
 from nonebot.plugin import PluginMetadata
 from jx3api import AsyncJX3API
 from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
 
-from .config import Config
-
 __plugin_meta__ = PluginMetadata(
     name="jx3search",
     description="剑三基础查询工具",
     usage="具体使用方法请看帮助",
-    config=Config,
 )
 
-config = get_plugin_config(Config)
+# 加载 .env 文件
+load_dotenv()  # 这里将加载 .env 文件中的环境变量
 
-# 从配置中读取默认服务器、TOKEN 和 TICKET
-config = get_driver().config
-DEFAULT_SERVER = config.default_server
-TOKEN = config.token
-TICKET = config.ticket
+# 从环境变量获取默认服务器、TOKEN 和 TICKET
+DEFAULT_SERVER = os.getenv("DEFAULT_SERVER")
+TOKEN = os.getenv("TOKEN")
+TICKET = os.getenv("TICKET")
 
 
 # 使用 TOKEN 和 TICKET 初始化 AsyncJX3API
