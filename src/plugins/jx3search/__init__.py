@@ -25,8 +25,8 @@ TICKET = os.getenv("TICKET")
 async_api = AsyncJX3API(token=TOKEN, ticket=TICKET)
 
 # 定义绑定文件路径
-BINDINGS_FILE = os.path.join(os.path.dirname(__file__),
-                             "../bind/bindings.json")
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+BINDINGS_FILE = os.path.join(ROOT_DIR, "bindings.json")
 
 
 def get_server_name(group_id: str) -> str:
@@ -58,28 +58,28 @@ async def handle_daily(event: GroupMessageEvent, args: Message = CommandArg()):
     # 从 AsyncJX3API 获取日常数据
     daily_info = await async_api.active_calendar(server=server_name)
 
-    # 从 daily_info 中提取数据
-    data = daily_info.get("data", {})
-
-    # 格式化文本消息
-    text_message = (f"📅 日期：{data.get('date')} (星期{data.get('week')})\n\n"
-                    f"⚔️ 战场活动：{data.get('war')}\n"
-                    f"🏞️ 大战：{data.get('battle')}\n"
-                    f"⛏️ 矿车：{data.get('orecar')}\n"
-                    f"📚 门派：{data.get('school')}\n"
-                    f"🛡️ 救援：{data.get('rescue')}\n\n"
-                    f"🍀 今日宠物奇缘：\n- " + "\n- ".join(data.get('luck', [])) +
+    # 检查 API 响应是否成功
+    if "date" not in daily_info:
+        print("查询失败或未找到有效的日常数据")
+    else:
+            
+            # 直接使用 daily_info 中的数据
+        text_message = (f"📅 日期：{daily_info.get('date')} (星期{daily_info.get('week')})\n\n"
+                    f"⚔️ 战场活动：{daily_info.get('war')}\n"
+                    f"🏞️ 大战：{daily_info.get('battle')}\n"
+                    f"⛏️ 矿车：{daily_info.get('orecar')}\n"
+                    f"📚 门派：{daily_info.get('school')}\n"
+                    f"🛡️ 救援：{daily_info.get('rescue')}\n\n"
+                    f"🍀 今日宠物奇缘：\n- " + "\n- ".join(daily_info.get('luck', [])) +
                     "\n\n"
                     f"🃏 副本：\n" +
-                    "\n".join(f"{i+1}. {card}"
-                              for i, card in enumerate(data.get('card', []))) +
+                    "\n".join(f"{i+1}. {card}" for i, card in enumerate(daily_info.get('card', []))) +
                     "\n\n"
+                    f"🎨 美人图：{daily_info.get('draw')}\n\n"
                     f"🎮 团本：\n" +
-                    "\n".join(f"{i+1}. {team}"
-                              for i, team in enumerate(data.get('team', []))))
-
-    # 返回格式化的文本信息
-    await daily.finish(f"服务器：{server_name} 的日常信息：\n{text_message}")
+                    "\n".join(f"{i+1}. {team}" for i, team in enumerate(daily_info.get('team', []))))
+            # 返回格式化的文本信息
+        await daily.finish(f"服务器：{server_name} 的日常信息：\n{text_message}")
 
 
 #行侠事件查询，输入行侠+地图名
@@ -95,26 +95,26 @@ async def handle_celebs(args: Message = CommandArg()):
     # 从 AsyncJX3API 获取行侠数据
     celebs_info = await async_api.active_celebs(name=map_name)
 
-    # 检查 API 响应
-    if celebs_info["code"] != 200:
-        await celebs.finish(f"查询失败：{celebs_info['msg']}")
+        # 检查 API 响应并确保 celebs_info 是一个列表
+    if not isinstance(celebs_info, list) or not celebs_info:
+        await celebs.finish("未找到相关行侠信息。")
 
-    # 提取行侠事件数据
-    event_data = celebs_info["data"]
-
+    # 筛选指定地图的事件
+    filtered_events = [event for event in celebs_info if event.get("map_name") == map_name]
+    
+    if not filtered_events:
+        await celebs.finish(f"未找到地图 {map_name} 的行侠信息。")
 
     # 格式化事件信息
-    text_message = f"行侠信息\n"
-    for event in event_data:
-        text_message += (f"\n地图名称：{event['map_name']}\n"
-                         f"事件：{event['event']}\n"
-                         f"地点：{event['site']}\n"
-                         f"{event['desc']}\n"
-                         f"时间：{event['time']}\n")
+    text_message = f"{map_name} ：\n"
+    for event in filtered_events:
+        text_message += (f"\n事件：{event.get('event', '未知')}\n"
+                         f"地点：{event.get('site', '未知')}\n"
+                         f"{event.get('desc', '无描述')}\n"
+                         f"时间：{event.get('time', '未知时间')}\n")
 
     # 发送格式化后的信息
     await celebs.finish(text_message)
-
 
 #科举试题查询，输入科举+题目
 exam = on_command("exam", aliases={"科举"}, priority=5, block=True)
@@ -265,7 +265,7 @@ async def handle_travel(args: Message = CommandArg()):
 check = on_command("check", aliases={"开服"}, priority=5, block=True)
 
 @check.handle()
-async def handle_check(args: Message = CommandArg()):
+async def handle_check(event: GroupMessageEvent, args: Message = CommandArg()):
     server_name = args.extract_plain_text()
     if not server_name:
         server_name = get_server_name(str(event.group_id))
@@ -333,7 +333,11 @@ async def handle_announce(args: Message = CommandArg()):
         await announce.finish(f"查询失败：{announce_info.get('msg', '未知错误')}")
 
     # 提取公告数据
-    data = announce_info.get("data", [{}])[0]
+    data_list = announce_info.get("data", [{}])
+    if isinstance(data_list, list) and data_list:
+        data = data_list[0]
+    else:
+        data = {}
 
     # 构建返回消息
     text_message = f"标题：{data.get('title')}\n"\
@@ -350,14 +354,14 @@ random = on_command("random", aliases={"骚话"}, priority=5, block=True)
 @random.handle()
 async def handle_random(args: Message = CommandArg()):
     # 从 AsyncJX3API 获取骚话
-    random_info = await async_api_saohua.random
+    random_info = await async_api.saohua_random()
     
     # 检查 API 响应是否成功
     if random_info.get("code") != 200:
         await random.finish(f"查询失败：{random_info.get('msg', '未知错误')}")
 
     # 提取骚话
-    data = random_info.get("data", [{}])[0]
+    data = random_info.get("data", [{}])
     
     # 构建返回消息
     text_message = f"{data.get('text')}"
@@ -371,14 +375,14 @@ content = on_command("content", aliases={"舔狗"}, priority=5, block=True)
 @content.handle()
 async def handle_content(args: Message = CommandArg()):
     # 从 AsyncJX3API 获取舔狗
-    content_info = await async_api_saohua.content
+    content_info = await async_api.saohua_content()
     
     # 检查 API 响应是否成功
     if content_info.get("code") != 200:
         await content.finish(f"查询失败：{content_info.get('msg', '未知错误')}")
 
     # 提取舔狗
-    data = content_info.get("data", [{}])[0]
+    data = content_info.get("data", [{}])
     
     # 构建返回消息
     text_message = f"{data.get('text')}"

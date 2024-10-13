@@ -48,7 +48,7 @@ bind = on_command("bind", aliases={"绑定"}, priority=5, block=True, permission
 
 # 创建 绑定 命令，并设置仅允许群管理员和群主权限
 @bind.handle()
-async def handle_function(args: Message = CommandArg()):
+async def handle_function(event: GroupMessageEvent, args: Message = CommandArg()):
     server_name = args.extract_plain_text()
 
     if server_name in server_list:
