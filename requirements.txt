@@ -1,0 +1,4 @@
+jx3api==2024.9.25
+nonebot2==2.3.3
+pydantic==2.9.2
+python-dotenv==1.0.1
