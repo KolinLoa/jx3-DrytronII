@@ -180,14 +180,14 @@ async def handle_flower(event: GroupMessageEvent,
 
     # 提取数据
     data = flower_info.get("data", {})
-    if not data or server_name not in data:
+    if not data:
         await flower.finish(f"{server_name} 没有找到关于 {flower_name} 的花价信息。")
 
     # 从 data 中提取具体花的信息
-    flowers = data[server_name]
+    flowers = data
 
     # 格式化输出
-    text_message = f"{server_name} 的花价信息：\n"
+    text_message = f"{flowers.get()} 的花价信息：\n"
     for flower_data in flowers:  # 使用 flower_data 代替 flower，避免冲突
         text_message += (f"\n花名：{flower_data.get('name', '未知')}\n"
                          f"颜色：{flower_data.get('color', '未知')}\n"
