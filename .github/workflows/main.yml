@@ -18,5 +18,5 @@ jobs:
         GITLAB_USERNAME: KolinLoa
         GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
-        git remote add gitlab $GITLAB_URL/KolinLoa/jx3-DrytronII.git
+        git remote add gitlab https://${{ env.GITLAB_USERNAME }}:${{ env.GITLAB_TOKEN }}@$GITLAB_URL/KolinLoa/jx3-DrytronII.git
         git push gitlab main
