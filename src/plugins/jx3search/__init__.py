@@ -38,10 +38,10 @@ def get_server_name(group_id: str) -> str:
 
     return bindings.get(group_id, DEFAULT_SERVER)
 
-
+#日常查询，输入日常（+服务器名）
 daily = on_command("daily", aliases={"日常"}, priority=5, block=True)
 
-#日常查询，输入日常（+服务器名）
+
 @daily.handle()
 async def handle_function(args: Message = CommandArg()):
     server_name = args.extract_plain_text().strip()
@@ -74,3 +74,40 @@ async def handle_function(args: Message = CommandArg()):
     await daily.finish(f"服务器：{server_name} 的日常信息：\n{text_message}")
     
 
+#行侠事件查询，输入行侠+地图名
+celebs = on_command("celebs", aliases={"行侠"}, priority=5, block=True)
+
+@celebs.handle()
+async def handle_function(args: Message = CommandArg()):
+    map_name = args.extract_plain_text()
+    if not map_name:
+        await celebs.finish("TMD想好了再查！")
+    
+    # 从 AsyncJX3API 获取行侠数据
+    celebs_info = await async_api.celebs(map_name)
+
+     # 检查 API 响应
+    if celebs_info["code"] != 200:
+        await celebs.finish(f"查询失败：{celebs_info['msg']}")
+        return
+    
+    # 提取行侠事件数据
+    event_data = celebs_info["data"]
+
+    # 如果没有事件数据，发送空数据提醒
+    if not event_data:
+        await celebs.finish(f"在 {map_name} 没有找到行侠数据。")
+
+    # 格式化事件信息
+    text_message = f"行侠信息\n"
+    for event in event_data:
+        text_message += (
+            f"\n地图名称：{event['map_name']}\n"
+            f"事件：{event['event']}\n"
+            f"地点：{event['site']}\n"
+            f"{event['desc']}\n"
+            f"时间：{event['time']}\n"
+        )
+
+    # 发送格式化后的信息
+    await celebs.finish(text_message)
