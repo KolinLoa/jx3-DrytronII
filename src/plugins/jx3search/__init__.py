@@ -100,9 +100,6 @@ async def handle_celebs(args: Message = CommandArg()):
     # 提取行侠事件数据
     event_data = celebs_info["data"]
 
-    # 如果没有事件数据，发送空数据提醒
-    if not event_data:
-        await celebs.finish(f"在 {map_name} 没有找到行侠数据。")
 
     # 格式化事件信息
     text_message = f"行侠信息\n"
@@ -180,8 +177,6 @@ async def handle_flower(event: GroupMessageEvent,
 
     # 提取数据
     data = flower_info.get("data", {})
-    if not data:
-        await flower.finish(f"{server_name} 没有找到关于 {flower_name} 的花价信息。")
 
     # 从 data 中提取具体花的信息
     flowers = data
@@ -196,3 +191,39 @@ async def handle_flower(event: GroupMessageEvent,
 
     # 发送格式化后的信息
     await flower.finish(text_message)
+
+#查询家具价格，输入家园+家具名
+furniture = on_command("furniture", aliases={"家园"}, priority=5, block=True)
+
+@furniture.handle()
+async def handle_furniture(args: Message = CommandArg()):
+    furniture_name = args.extract_plain_text()
+    if not furniture_name:
+        await furniture.finish("TMD想好了再查！")
+    
+    # 从 AsyncJX3API 获取家具价格数据
+    furniture_info = await async_api.home_furniture(furniture_name)
+
+    # 检查 API 响应是否成功
+    if furniture_info.get("code") != 200:
+        await furniture.finish(f"查询失败：{furniture_info.get('msg', '未知错误')}")
+
+    # 提取数据
+    data = furniture_info.get("data", {})
+    image_url = data.get("image")  # 获取图片 URL
+
+    # 构建返回信息
+    text_message = f"家具名称：{data.get('name')}\n" \
+                   f"来源：{data.get('source')}\n" \
+                   f"描述：{data.get('tip')}\n" \
+                   f"装饰度：{data.get('view')}\n" \
+                   f"质量：{data.get('quality')}"
+
+    # 发送家具信息和图片
+    await furniture.send(Message(f"{text_message}\n[CQ:image,file={image_url}]"))
+
+
+
+
+
+
