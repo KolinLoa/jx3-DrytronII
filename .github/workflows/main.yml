@@ -12,6 +12,11 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v2
 
+    - name: Set Git Identity
+      run: |
+        git config --global user.name "KolinLoa"
+        git config --global user.email "liukang861@yahoo.com"
+
     - name: Configure Git for GitLab
       env:
         GITLAB_URL: gitlab.com
