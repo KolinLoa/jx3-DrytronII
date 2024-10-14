@@ -19,7 +19,7 @@ _名字来源：Yu-Gi-Oh! Deck Drytron_
 
 ## 简介
 
-DrytronII是一个用于查询剑三基础信息的机器人，~~以后或许也不会有其他功能（bushi）~~，基于 [Nonebot 2](https://v2.nonebot.dev) 构建，主要给大家带来方便和快乐。
+DrytronII是一个用于查询剑三基础信息的机器人，~~以后或许也不会有其他功能（bushi）~~，基于 [Nonebot 2](https://v2.nonebot.dev) 构建，数据来源目前主要来自[JX3API](https://www.jx3api.com)主要给大家带来方便和快乐。
 
 ## 部署方法
 
@@ -37,6 +37,17 @@ pip install nonebot-adapter-onebot
 nb run
 ```
 即可启动机器人，需要连接QQ使用请参考[NapCatQQ](https://napneko.github.io/zh-CN/)。
+
+## To Do
+
+**完善全部API功能**  
+**Websocket推送功能**  
+开团功能  
+宏  
+奇遇以及宠物查询  
+  
+    
+**时间不是很充足，可能要延迟很久**
 
 ## 友情链接
 
