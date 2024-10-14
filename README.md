@@ -52,7 +52,7 @@ nb run
 
 ## 友情链接
 
-[CloudStudio](https://studio.cloud.tencent.com/) — 腾讯云免费在线IDE  
+[CloudStudio](https://ide.cloud.tencent.com) — 腾讯云免费在线IDE  
 [ChatGPT](https://chatgpt.com) — 好用的AI助手  
 [JX3API](https://jx3api.com) — 剑三API提供数据来源
  
