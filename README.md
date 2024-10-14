@@ -25,7 +25,7 @@ DrytronII是一个用于查询剑三基础信息的机器人，~~以后或许也
 
 推荐是直接使用git clone的方式  
 ```
-git clone https://github.com/KolinLoan/jx3-DrytronII.git 
+git clone https://github.com/KolinLoa/jx3-DrytronII.git 
 ```
 克隆完成后，安装所需依赖，推荐使用conda建立虚拟环境
 ```
