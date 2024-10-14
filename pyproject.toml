@@ -1,9 +1,18 @@
 [project]
 name = "jx3-DrytronII"
 version = "0.1.0"
-description = "jx3-DrytronII"
+description = "JX3 Seaech BOT"
 readme = "README.md"
-requires-python = ">=3.9, <4.0"
+requires-python = "==3.11.*"
+authors = [
+    {name = "KolinLoa", email = "kolinloa@petalmail.com"},
+]
+dependencies = [
+    "jx3api==2024.9.25",
+    "nonebot2[fastapi]>=2.3.3",
+    "nonebot-adapter-onebot==2.4.5",
+]
+license = {text = "MIT"}
 
 [tool.nonebot]
 adapters = [
@@ -12,3 +21,6 @@ adapters = [
 plugins = []
 plugin_dirs = ["src/plugins"]
 builtin_plugins = ["echo"]
+
+[tool.pdm]
+distribution = false

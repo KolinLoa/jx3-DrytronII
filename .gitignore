@@ -143,3 +143,4 @@ src/plugins/jx3search/test.py
 napcat.sh
 core.1343
 bindings.json
+.pdm-python

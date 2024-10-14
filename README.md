@@ -27,10 +27,15 @@ DrytronII是一个用于查询剑三基础信息的机器人，~~以后或许也
 ```
 git clone https://github.com/KolinLoa/jx3-DrytronII.git 
 ```
-克隆完成后，安装所需依赖，推荐使用conda建立虚拟环境
+克隆完成后，推荐使用pdm快速安装依赖
 ```
+pip install pdm
+pdm install
+```
+~~克隆完成后，安装所需依赖，推荐使用conda建立虚拟环境~~
+ ```
 pip install -r requirements.txt
-pip install nonebot-adapter-onebot
+pip install nonebot2[fastapi]
 ```
 把env.dev内的配置文件进行修改或者不修改，粘贴进env.prod文件内，准备工作方可完成  
 随后执行
