@@ -32,7 +32,7 @@ git clone https://github.com/KolinLoan/jx3-DrytronII.git
 pip install -r requirements.txt
 pip install nonebot-adapter-onebot
 ```
-把env.dev内的配置文件进行修改货主不修改，粘贴进env.prod文件内，准备工作方可完成  
+把env.dev内的配置文件进行修改或者不修改，粘贴进env.prod文件内，准备工作方可完成  
 随后执行
 ```
 nb run
