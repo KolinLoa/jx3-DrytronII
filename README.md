@@ -6,7 +6,7 @@
 _基于 Nonebot 2 的多功能群聊机器人_
 
 ![Nonebot2](https://img.shields.io/badge/Nonebot2-Release_v2.3.3-brightgreen)
-![GitHub](https://img.shields.io/github/license/KolinLoan/jx3-DrytronII)
+![GitHub](https://img.shields.io/github/license/KolinLoa/jx3-DrytronII)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![JX3API](https://img.shields.io/badge/JX3API-2024.9.25-purple)
 
