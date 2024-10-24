@@ -29,7 +29,6 @@ git clone https://github.com/KolinLoa/jx3-DrytronII.git
 ```
 克隆完成后，推荐使用pdm快速安装依赖
 ```
-pip install nb-cli
 pip install pdm
 pdm install
 ```
