@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:db846664e5cb81f66d357834c9008e4170d73e3eb3b8a894aaa69375438b5c57"
+content_hash = "sha256:4259ccbdb8da5abd0ceb6f30226667fb586441db87f4e5af8e642b06da9880df"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -403,15 +403,15 @@ files = [
 
 [[package]]
 name = "jx3api"
-version = "2024.9.25"
+version = "2024.10.21"
 summary = "The Python SDK to the JX3API"
 groups = ["default"]
 dependencies = [
     "aiohttp",
 ]
 files = [
-    {file = "jx3api-2024.9.25-py3-none-any.whl", hash = "sha256:56c317ff057220ec8e5e4d70da1e3dea3474dac500958a077ba5f68e0af90d18"},
-    {file = "jx3api-2024.9.25.tar.gz", hash = "sha256:59891c0218dfe8b4a8ff0ecd5430c3a6b727d7c03f6bce86f0e811eae86066b6"},
+    {file = "jx3api-2024.10.21-py3-none-any.whl", hash = "sha256:ecf22c905a63d9a77b534401a5a9466dfcbb6a65da03d7846ae545cd440433ed"},
+    {file = "jx3api-2024.10.21.tar.gz", hash = "sha256:a8e9a232feb91dd28123405d32df4cb452e0d20fc516e658beef6ac0e39f384a"},
 ]
 
 [[package]]

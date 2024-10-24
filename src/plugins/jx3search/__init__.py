@@ -132,7 +132,7 @@ async def handle_exam(args: Message = CommandArg()):
     # 检查是否有数据
     if exam_info:
         for item in exam_info:
-            text_message += (f"问题 ID: {item['id']}\n"
+            text_message = (f"问题 ID: {item['id']}\n"
                              f"问题: {item['question']}\n"
                              f"答案: {item['answer']}\n"
                              f"拼音: {item['pinyin']}\n")
@@ -245,7 +245,7 @@ async def handle_furniture(args: Message = CommandArg()):
     )
 
     # 发送家具信息和图片
-    await furniture.send(Message(f"{text_message}\n[CQ:image,file={image_url}]"))
+    await furniture.finish(Message(f"{text_message}\n[CQ:image,file={image_url}]"))
 
 
 # 器物图谱查询，输入器物+地图
@@ -296,7 +296,7 @@ async def handle_travel(args: Message = CommandArg()):
     )
 
     # 发送器物信息和图片
-    await travel.send(Message(f"{text_message}\n[CQ:image,file={image_url}]"))
+    await travel.finish(Message(f"{text_message}\n[CQ:image,file={image_url}]"))
 
     
 
@@ -340,7 +340,7 @@ async def handle_check(event: GroupMessageEvent, args: Message = CommandArg()):
         )
 
     # 发送服务器状态消息
-    await check.send(text_message)
+    await check.finish(text_message)
 
 # 官方最新公告及新闻，输入新闻
 allnews = on_command("allnews", aliases={"新闻"}, priority=5, block=True)
@@ -375,7 +375,7 @@ async def handle_allnews(args: Message = CommandArg()):
     )
 
     # 发送消息
-    await allnews.send(text_message)
+    await allnews.finish(text_message)
 
 
 # 官方最新维护公告,输入维护
@@ -405,7 +405,7 @@ async def handle_announce(args: Message = CommandArg()):
     )
 
     # 发送消息
-    await announce.send(text_message)
+    await announce.finish(text_message)
 
 # 骚话，输入骚话
 random = on_command("random", aliases={"骚话"}, priority=5, block=True)
@@ -427,7 +427,7 @@ async def handle_random(args: Message = CommandArg()):
         await random.finish("查询失败：数据不完整")
 
     # 发送消息
-    await random.send(saohua_text)
+    await random.finish(saohua_text)
 
 # 舔狗日记，输入舔狗
 content = on_command("content", aliases={"舔狗"}, priority=5, block=True)
@@ -449,7 +449,7 @@ async def handle_content(args: Message = CommandArg()):
         await content.finish("查询失败：数据不完整")
 
     # 发送消息
-    await content.send(content_text)
+    await content.finish(content_text)
 
 
 
