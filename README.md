@@ -42,13 +42,17 @@ pip install nonebot2[fastapi]
 ```
 nb run
 ```
+Linux
+```
+pdm run nb run
+```
 即可启动机器人，需要连接QQ使用请参考[NapCatQQ](https://napneko.github.io/zh-CN/)。
 
 ## To Do
 
 **完善全部API功能**  
 ~~**Websocket推送功能**~~  
-**完善Websocket推送功能**（现有的websocket功能借助了小白老师23年写的ws插件，很多内容还没进行修正，但是可以满足使用）  
+~~**完善Websocket推送功能**（现有的websocket功能借助了小白老师23年写的ws插件，很多内容还没进行修正，但是可以满足使用）~~  
 开团功能  
 宏  
 奇遇以及宠物查询  
