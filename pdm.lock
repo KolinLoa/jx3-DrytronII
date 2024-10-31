@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:4259ccbdb8da5abd0ceb6f30226667fb586441db87f4e5af8e642b06da9880df"
+content_hash = "sha256:a27226850936c1093d8168e88b15a2d6c31837a9246f0d60f6dafa65eab09d1f"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -140,6 +140,17 @@ dependencies = [
 files = [
     {file = "binaryornot-0.4.4-py2.py3-none-any.whl", hash = "sha256:b8b71173c917bddcd2c16070412e369c3ed7f0528926f70cac18a6c97fd563e4"},
     {file = "binaryornot-0.4.4.tar.gz", hash = "sha256:359501dfc9d40632edc9fac890e19542db1a287bbcfa58175b66658392018061"},
+]
+
+[[package]]
+name = "cachetools"
+version = "5.5.0"
+requires_python = ">=3.7"
+summary = "Extensible memoizing collections and decorators"
+groups = ["default"]
+files = [
+    {file = "cachetools-5.5.0-py3-none-any.whl", hash = "sha256:02134e8439cdc2ffb62023ce1debca2944c3f289d66bb17ead3ab3dede74b292"},
+    {file = "cachetools-5.5.0.tar.gz", hash = "sha256:2cc24fb4cbe39633fb7badd9db9ca6295d766d9c2995f245725a46715d050f2a"},
 ]
 
 [[package]]
@@ -748,6 +759,20 @@ files = [
 ]
 
 [[package]]
+name = "pyjwt"
+version = "2.8.0"
+requires_python = ">=3.7"
+summary = "JSON Web Token implementation in Python"
+groups = ["default"]
+dependencies = [
+    "typing-extensions; python_version <= \"3.7\"",
+]
+files = [
+    {file = "PyJWT-2.8.0-py3-none-any.whl", hash = "sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320"},
+    {file = "PyJWT-2.8.0.tar.gz", hash = "sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de"},
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
@@ -1104,4 +1129,22 @@ files = [
     {file = "yarl-1.15.2-cp311-cp311-win_amd64.whl", hash = "sha256:0ccaa1bc98751fbfcf53dc8dfdb90d96e98838010fc254180dd6707a6e8bb179"},
     {file = "yarl-1.15.2-py3-none-any.whl", hash = "sha256:0d3105efab7c5c091609abacad33afff33bdff0035bece164c98bcf5a85ef90a"},
     {file = "yarl-1.15.2.tar.gz", hash = "sha256:a39c36f4218a5bb668b4f06874d676d35a035ee668e6e7e3538835c703634b84"},
+]
+
+[[package]]
+name = "zhipuai"
+version = "2.1.5.20230904"
+requires_python = "!=2.7.*,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,!=3.7.*,>=3.8"
+summary = "A SDK library for accessing big model apis from ZhipuAI"
+groups = ["default"]
+dependencies = [
+    "cachetools>=4.2.2",
+    "httpx>=0.23.0",
+    "pydantic-core>=2.14.6",
+    "pydantic<3.0,>=1.9.0",
+    "pyjwt<2.9.0,>=2.8.0",
+]
+files = [
+    {file = "zhipuai-2.1.5.20230904-py3-none-any.whl", hash = "sha256:8485ca452c2f07fea476fb0666abc8fbbdf1b2e4feeee46a3bb3c1a2b51efccd"},
+    {file = "zhipuai-2.1.5.20230904.tar.gz", hash = "sha256:2c19dd796b12e2f19b93d8f9be6fd01e85d3320737a187ebf3c75a9806a7c2b5"},
 ]
