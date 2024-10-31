@@ -1,16 +1,20 @@
 import os
 import json
-from nonebot import on_command, get_driver
+from nonebot import on_command, get_driver, get_plugin_config
 from nonebot.plugin import PluginMetadata
 from jx3api import AsyncJX3API
 from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
+from .config import Config
 
 __plugin_meta__ = PluginMetadata(
     name="jx3search",
     description="剑三基础查询工具",
     usage="具体使用方法请看帮助",
+    config=Config,
 )
+
+config = get_plugin_config(Config)
 
 # 获取 NoneBot 的配置对象
 driver = get_driver()

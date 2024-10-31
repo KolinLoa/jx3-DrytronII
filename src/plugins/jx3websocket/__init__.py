@@ -1,6 +1,7 @@
-from nonebot import get_driver, logger
+from nonebot import get_plugin_config, get_driver, logger
 from nonebot.adapters.onebot.v11 import Bot, Event
 from nonebot.plugin import PluginMetadata
+from .config import Config
 import websockets
 import datetime
 import asyncio
@@ -24,9 +25,10 @@ __plugin_meta__ = PluginMetadata(
     name="jx3websocket",
     description="剑网三websocket消息推送",
     usage="接收jx3api.com的消息",
-    extra={},
+    config=Config,
 )
 
+config = get_plugin_config(Config)
 
 class Handler:
     @classmethod
