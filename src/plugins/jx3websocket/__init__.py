@@ -146,32 +146,17 @@ class Handler:
 
     @classmethod
     async def action_2001(cls, data: dict):
-        server_name = data["server"]
-        status = data["status"]
-        if status == 1:
-            status = "开张啦！"
-        else:
-            status = "倒闭啦！"
-        if server_name == "青梅煮酒":
-            return f"剑网三{status}"
+            return f"剑网三{data}"
 
 
 
     @classmethod
     async def action_2002(cls, data: dict):
-        type = data["type"]
-        title = data["title"]
-        url = data["url"]
-        date = data["date"]
-        return f"{type}来了\n{title}\n{url}\n日期：{date}"
+        return f"{data}"
 
     @classmethod
     async def action_2003(cls, data: dict):
-        old_version = data["old_version"]
-        new_version = data["new_version"]
-        package_num = data["package_num"]
-        package_size = data["package_size"]
-        return f"游戏更新包已发布，\n{old_version} → {new_version}\n {package_num}个更新包，共{package_size}"
+        return f"游戏更新包已发布，{data}"
 
     @classmethod
     async def action_2004(cls, data: dict):
