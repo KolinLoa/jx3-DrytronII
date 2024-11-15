@@ -32,7 +32,7 @@ CONTENT = config.content
 client = ZhipuAI(api_key=API_KEY)
 
 
-wenxin_chat = on_message(priority=99)
+zhipu_chat = on_message(priority=99)
 chat_query = on_message(rule=to_me(), permission=GROUP, priority=9, block=True)
 set_probability_cmd = on_command("set_probability", aliases={"活跃度", "设置概率"}, permission=GROUP_ADMIN | GROUP_OWNER)
 
@@ -41,17 +41,17 @@ REPLY_PROBABILITY = 10  # 默认的概率值
 @chat_query.handle()
 async def handle_chat_query(bot: Bot, event: GroupMessageEvent):
     user_message = str(event.get_message()).strip()
-    response = await get_wenxin_response(user_message, config)
+    response = await get_zhipu_response(user_message, config)
     await chat_query.send(response)
 
-@wenxin_chat.handle()
+@zhipu_chat.handle()
 async def handle_auto_chat(bot: Bot, event: GroupMessageEvent):
     user_message = str(event.get_message()).strip()
 
     # 根据概率决定是否触发 auto_chat
     if random.randint(1, 200) <= REPLY_PROBABILITY:  # 概率值调整为 1-200 之间
-        response = await get_wenxin_response(user_message)
-        await wenxin_chat.send(response)
+        response = await get_zhipu_response(user_message, config)
+        await zhipu_chat.send(response)
 
 @set_probability_cmd.handle()
 async def handle_set_probability(event: GroupMessageEvent, args: Message = CommandArg()):
@@ -68,7 +68,7 @@ async def handle_set_probability(event: GroupMessageEvent, args: Message = Comma
         await set_probability_cmd.send("请输入有效的整数。")
 
 
-async def get_wenxin_response(user_message: str, config) -> str:
+async def get_zhipu_response(user_message: str, config) -> str:
     response = client.chat.completions.create(
         model="glm-4-flash",
         messages=[

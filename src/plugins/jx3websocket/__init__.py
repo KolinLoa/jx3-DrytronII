@@ -9,13 +9,10 @@ import certifi
 import json
 import ssl
 
-
-
 driver = get_driver()
 config = driver.config
 
 TOKEN = config.wsstoken
-
 
 # SSL 配置
 context = ssl.create_default_context()
@@ -29,6 +26,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 config = get_plugin_config(Config)
+
 
 class Handler:
     @classmethod
@@ -146,17 +144,34 @@ class Handler:
 
     @classmethod
     async def action_2001(cls, data: dict):
-            return f"剑网三{data}"
+        zone = data['zone']
+        server = data['server']
+        status = data['status']
+        time = await gettime(data["time"])
+        if server == "青梅煮酒":
+            if status == 1:
+                return f"北京时间 {time}\n剑网三开业啦！"
+            else:
+                return f"北京时间 {time}\n剑网三倒闭啦！"
 
 
 
     @classmethod
     async def action_2002(cls, data: dict):
-        return f"{data}"
+        kind = data["class"]
+        title = data["title"]
+        url = data["url"]
+        date = data["date"]
+
+        return f"{kind}驾到\n{title}\n{url}\n{date}"
 
     @classmethod
     async def action_2003(cls, data: dict):
-        return f"游戏更新包已发布，{data}"
+        now_version = data["now_version"]
+        new_version = data["new_version"]
+        package_num = data["package_num"]
+        package_size = data["package_size"]
+        return f"游戏更新包已发布\n{now_version}-->{new_version}\n数量{package_num}\n大小{package_size}"
 
     @classmethod
     async def action_2004(cls, data: dict):
@@ -167,22 +182,12 @@ class Handler:
         return f"{title}\n吃瓜地址：{url}\n来源：{tieba_name}\n服务器：{server_name}"
 
     @classmethod
-    async def action_2005(cls, data: dict):
-        server_name = data["server"]
-        castle = data["castle"]
-        start = await gettime(data["start"])
-        #return f"关隘预告: {server_name},{castle},{start}"
-        #默认关闭，太吵了，需要的取消前面的注释符号即可打开
-
-    @classmethod
     async def action_2006(cls, data: dict):
         name = data["name"]
         site = data["site"]
         desc = data["desc"]
         time = await gettime(data["time"])
         return f"云从预告: {site},{name},{desc},{time}"
-
-    # ...
 
 
 class WebSocket:
@@ -217,18 +222,33 @@ class WebSocket:
                 if handler := getattr(self.handler, name, None):
                     message = await handler(data['data'])
                     await self.send_to_all_groups(message)
-                logger.info("收到消息: %s", data)
+                logger.info(f"收到消息: {data}")
         except Exception as e:
             logger.error(f"连接已断开({e})")
-            asyncio.create_task(self.connect())  # 创建重连任务
+            asyncio.create_task(self.connect())
+
+    # 创建重连任务
 
     async def send_to_all_groups(self, message: str):
+        if not isinstance(message, str) or not message.strip():
+            logger.warning("消息为空或不是字符串，跳过发送")
+            return
+
         groups = await self.bot.get_group_list()
+        tasks = []
         for group in groups:
             group_id = group['group_id']
+            task = asyncio.create_task(self.send_group_msg(group_id, message))
+            tasks.append(task)
+
+        await asyncio.gather(*tasks)
+
+    async def send_group_msg(self, group_id: int, message: str):
+        try:
             await self.bot.send_group_msg(group_id=group_id, message=message)
             logger.info(f"已发送消息到群 {group_id}: {message}")
-
+        except Exception as e:
+            logger.error(f"发送消息到群 {group_id} 失败: {e}")
 
 
 async def gettime(timestamp):
@@ -238,6 +258,8 @@ async def gettime(timestamp):
     formatted_time = dt.strftime("%H:%M")
 
     return formatted_time
+
+
 async def start_websocket(bot: Bot):
     ws = WebSocket(bot)
     await ws.connect()
