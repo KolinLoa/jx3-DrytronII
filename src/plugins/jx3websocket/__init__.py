@@ -1,6 +1,8 @@
 from nonebot import get_plugin_config, get_driver, logger
 from nonebot.adapters.onebot.v11 import Bot, Event
 from nonebot.plugin import PluginMetadata
+from websockets.exceptions import ConnectionClosed
+from websockets.http import Headers
 from .config import Config
 import websockets
 import datetime
@@ -200,9 +202,11 @@ class WebSocket:
         while True:
             try:
                 logger.info("尝试连接 WebSocket 服务器...")
+                # 使用 Headers 类设置自定义头部
+                headers = Headers({'token': TOKEN})
                 self.client = await websockets.connect(
-                    uri="wss://socket.jx3api.com",
-                    extra_headers={'token': TOKEN},
+                    uri="wss://event.jx3api.com",
+                    additional_headers=headers,  # 使用 additional_headers
                     ssl=context
                 )
                 logger.info("建立连接成功...")
@@ -215,7 +219,7 @@ class WebSocket:
     async def receive(self):
         logger.info("开始接收消息")
         try:
-            while self.client.open:
+            while True:
                 data = await self.client.recv()
                 data = json.loads(data)
                 name = f"action_{data['action']}"
@@ -223,6 +227,9 @@ class WebSocket:
                     message = await handler(data['data'])
                     await self.send_to_all_groups(message)
                 logger.info(f"收到消息: {data}")
+        except ConnectionClosed as e:
+            logger.error(f"连接已关闭 ({e})，尝试重新连接...")
+            await self.connect()  # 重新连接
         except Exception as e:
             logger.error(f"连接已断开({e})")
             asyncio.create_task(self.connect())
