@@ -40,10 +40,10 @@ jobs:
         run: |
           rsync -av --exclude .git ./ gitea-repo/
 
-      # 提交并推送到 Gitea 仓库
-      - name: Commit and push to Gitea
+      # 获取 GitHub 提交信息并提交到 Gitea
+      - name: Commit and push to Gitea with GitHub commit message
         run: |
           cd gitea-repo
           git add .
-          git commit -m "Update from GitHub"
+          git commit -m "$(git log -1 --pretty=%B)"
           git push https://KolinLoa:${{ secrets.GITEA_TOKEN }}@gitea.com/KolinLoa/jx3-DrytronII.git
