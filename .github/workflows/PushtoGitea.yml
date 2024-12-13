@@ -1,0 +1,43 @@
+name: Push to Gitea
+
+on:
+  push:
+    branches:
+      - main  # 根据需要修改为你想要监控的分支
+
+jobs:
+  push-to-gitea:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出当前 GitHub 仓库的代码
+      - name: Checkout GitHub repository
+        uses: actions/checkout@v3
+
+      # 设置 Git 配置
+      - name: Set up Git configuration
+        run: |
+          git config user.name "KolinLoa"  # 修改为你的用户名
+          git config user.email "liukang861@yahoo.com"  # 修改为你的邮箱
+
+      # 克隆 Gitea 仓库
+      - name: Clone Gitea repository
+        run: |
+          git clone https://gitea.com/KolinLoa/jx3-DrytronII.git gitea-repo
+        env:
+          GIT_ASKPASS: /bin/echo
+          GIT_PASSWORD: ${{ secrets.GITEA_TOKEN }}  # 使用 GitHub secrets 存储 Gitea 的访问令牌
+
+      # 将 GitHub 仓库的代码复制到 Gitea 仓库中
+      - name: Copy files to Gitea repo
+        run: |
+          cp -r ./* gitea-repo/
+          cd gitea-repo
+
+      # 提交并推送到 Gitea 仓库
+      - name: Commit and push to Gitea
+        run: |
+          cd gitea-repo
+          git add .
+          git commit -m "Update from GitHub"
+          git push https://KolinLoa:${{ secrets.GITEA_TOKEN }}@gitea.com/KolinLoa/jx3-DrytronII.git
