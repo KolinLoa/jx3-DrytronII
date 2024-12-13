@@ -14,7 +14,7 @@ jobs:
       - name: Checkout GitHub repository
         uses: actions/checkout@v3
 
-      # 设置 Git 配置
+      # 设置 Git 配置（在当前仓库范围内生效）
       - name: Set up Git configuration
         run: |
           git config user.name "KolinLoa"
