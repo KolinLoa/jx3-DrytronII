@@ -3,7 +3,7 @@ name = "jx3-DrytronII"
 version = "0.1.0"
 description = "JX3 Seaech BOT"
 readme = "README.md"
-requires-python = "==3.11.*"
+requires-python = ">=3.11"
 authors = [
     {name = "KolinLoa", email = "kolinloa@petalmail.com"},
 ]
