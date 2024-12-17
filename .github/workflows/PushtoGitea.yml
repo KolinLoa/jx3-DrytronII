@@ -29,13 +29,13 @@ jobs:
           git fetch gitea main  # 拉取 Gitea 仓库的历史记录
           git merge gitea/main --allow-unrelated-histories || true  # 忽略合并失败，继续执行
 
-      # 解决冲突：如果有冲突，自动用 GitHub 的文件覆盖 Gitea 的文件
-      - name: Resolve merge conflict (auto-accept GitHub version)
+      - name: Resolve merge conflicts (auto-accept GitHub version)
         run: |
-          cd .github/workflows
-          git checkout --theirs PushtoGitea.yml  # 使用 GitHub 版本覆盖 Gitea 版本
-          git add .  # 添加冲突解决后的文件
-          git commit -m "Resolved merge conflict by accepting GitHub version"  # 提交解决冲突后的文件
+          # 如果有冲突，选择 GitHub 的版本覆盖 Gitea 的版本
+          git checkout --theirs .github/workflows/PushtoGitea.yml  # 自动用 GitHub 版本覆盖冲突文件
+          git add .  # 添加解决后的冲突文件
+          git commit -m "Resolved merge conflict by accepting GitHub version"  # 提交解决后的文件
 
       - name: Push to Gitea
-        run: git push gitea main  # 推送到 Gitea
+        run: |
+          git push --force gitea main  # 强制推送更新到 Gitea
