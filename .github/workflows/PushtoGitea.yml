@@ -14,9 +14,9 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # 完整克隆整个历史记录
+          fetch-depth: 0  # 完整克隆整个历史记录，确保包含所有提交历史
 
-      # 步骤 2: 设置 Git 用户信息
+      # 步骤 2: 设置 Git 配置
       - name: Set Git Identity
         run: |
           git config --global user.name "KolinLoa"
@@ -32,34 +32,13 @@ jobs:
           git remote add gitea https://${{ env.GITEA_USERNAME }}:${{ env.GITEA_TOKEN }}@${{ env.GITEA_URL }}/KolinLoa/jx3-DrytronII.git
           git fetch gitea main  # 拉取 Gitea 仓库的历史记录
 
-      # 步骤 4: 查看当前 Git 状态和日志
-      - name: Debug Git status and logs
-        run: |
-          echo "Git status"
-          git status
-          echo "Git log"
-          git log --oneline --graph --decorate
-
-      # 步骤 5: 合并 GitHub 和 Gitea 仓库的历史
-      - name: Merge Gitea repository history
-        run: |
-          git merge gitea/main --allow-unrelated-histories || echo "Merge conflict, will resolve"  # 如果合并失败，继续处理
-
-      # 步骤 6: 解决合并冲突（如果有）
-      - name: Resolve merge conflicts
-        run: |
-          # 如果出现冲突，自动接受 GitHub 仓库的版本
-          git checkout --theirs .github/workflows/PushtoGitea.yml  # 自动接受 GitHub 版本，覆盖冲突文件
-          git add .  # 添加已解决冲突的文件
-          git commit -m "Resolved merge conflict by accepting GitHub version"  # 提交解决后的文件
-
-      # 步骤 7: 确认提交并查看提交记录
-      - name: Check commit history and status
+      # 步骤 4: 查看 Git 状态
+      - name: Check git status
         run: |
           git status
           git log --oneline
 
-      # 步骤 8: 强制推送到 Gitea
+      # 步骤 5: 将 GitHub 仓库的变动推送到 Gitea
       - name: Push to Gitea
         run: |
           git push --force gitea main  # 强制推送更新到 Gitea
