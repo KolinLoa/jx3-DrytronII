@@ -32,7 +32,7 @@ jobs:
           git remote add gitea https://${{ env.GITEA_USERNAME }}:${{ env.GITEA_TOKEN }}@${{ env.GITEA_URL }}/KolinLoa/jx3-DrytronII.git
           git fetch gitea main  # 拉取 Gitea 仓库的历史记录
 
-      # 步骤 4: 查看当前 Git 状态
+      # 步骤 4: 查看当前 Git 状态和日志
       - name: Debug Git status and logs
         run: |
           echo "Git status"
@@ -53,11 +53,13 @@ jobs:
           git add .  # 添加已解决冲突的文件
           git commit -m "Resolved merge conflict by accepting GitHub version"  # 提交解决后的文件
 
-      # 步骤 7: 查看提交记录
-      - name: Check commit history
-        run: git log --oneline
+      # 步骤 7: 确认提交并查看提交记录
+      - name: Check commit history and status
+        run: |
+          git status
+          git log --oneline
 
-      # 步骤 8: 推送到 Gitea 仓库
+      # 步骤 8: 强制推送到 Gitea
       - name: Push to Gitea
         run: |
           git push --force gitea main  # 强制推送更新到 Gitea
