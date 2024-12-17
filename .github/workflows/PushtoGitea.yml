@@ -39,11 +39,13 @@ jobs:
       - name: Copy files to Gitea repo
         run: |
           rsync -av --exclude .git ./ gitea-repo/
+          cd gitea-repo
+          rm -rf gitea-repo  # 删除克隆仓库内的 `gitea-repo` 文件夹
 
       # 获取 GitHub 提交信息并提交到 Gitea
       - name: Commit and push to Gitea with GitHub commit message
         run: |
-          cd gitea-repo
-          git add .
-          git commit -m "$(git log -1 --pretty=%B)"
+          cd gitea-repo  # 进入 Gitea 仓库
+          git add .  # 添加所有更改的文件
+          git commit -m "$(git log -1 --pretty=%B)"  # 使用 GitHub 提交的原始信息
           git push https://KolinLoa:${{ secrets.GITEA_TOKEN }}@gitea.com/KolinLoa/jx3-DrytronII.git
