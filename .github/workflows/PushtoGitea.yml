@@ -42,17 +42,12 @@ jobs:
           cd gitea-repo
           rm -rf gitea-repo  # 删除克隆仓库内的 `gitea-repo` 文件夹
 
-      # 确保 Gitea 仓库拉取最新的 GitHub 提交历史
-      - name: Pull latest commits from Gitea
+      # 拉取 Gitea 仓库的最新提交，并强制推送到 Gitea
+      - name: Fetch and push to Gitea with GitHub commit message
         run: |
           cd gitea-repo
-          git fetch origin main
-          git merge origin/main
-
-      # 获取 GitHub 提交信息并提交到 Gitea
-      - name: Commit and push to Gitea with GitHub commit message
-        run: |
-          cd gitea-repo
-          git add .  # 添加所有更改的文件
+          git fetch origin main  # 拉取 Gitea 的主分支
+          git reset --hard origin/main  # 重置 Gitea 仓库与 GitHub 主分支同步
+          git add .  # 添加文件变更
           git commit -m "$(git log -1 --pretty=%B)"  # 使用 GitHub 提交的原始信息
-          git push https://KolinLoa:${{ secrets.GITEA_TOKEN }}@gitea.com/KolinLoa/jx3-DrytronII.git
+          git push --force https://KolinLoa:${{ secrets.GITEA_TOKEN }}@gitea.com/KolinLoa/jx3-DrytronII.git  # 强制推送，保持历史一致性
